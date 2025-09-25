@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Métodos de Pago - QUITOMIL</title>
+    <style>
+      :root {
+        --primary-color: #900020; /* Vino */
+        --secondary-color: #ffd700; /* Amarillo */
+        --accent-color: #212529; /* Negro */
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --success-color: #2a9d8f;
+        --warning-color: #e9c46a;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--dark-color);
+        overflow-x: hidden;
+        background-color: #f9f9f9;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Header y Navegación */
+      .header {
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      .nav-brand h1 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-item {
+        margin-left: 1.5rem;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 600;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color);
+      }
+
+      .nav-link.active {
+        color: var(--primary-color);
+      }
+
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--secondary-color);
+      }
+
+      .btn-login {
+        background-color: var(--primary-color);
+        color: white !important;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s;
+      }
+
+      .btn-login:hover {
+        background-color: #70001a;
+        transform: translateY(-2px);
+      }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--dark-color);
+        margin: 3px 0;
+        transition: 0.3s;
+      }
+
+      /* Hero Section */
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          #70001a 100%
+        );
+        color: white;
+        padding: 8rem 0 4rem;
+        text-align: center;
+      }
+
+      .page-hero h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .page-hero p {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* Resumen de Compra */
+      .purchase-summary {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin: -50px auto 2rem;
+        position: relative;
+        z-index: 10;
+        max-width: 800px;
+      }
+
+      .summary-title {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #e9ecef;
+      }
+
+      /* Métodos de Pago */
+      .payment-methods {
+        padding: 2rem 0;
+      }
+
+      .payment-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .payment-option {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      .payment-option:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .payment-option.selected {
+        border-color: var(--primary-color);
+        background-color: rgba(144, 0, 32, 0.05);
+        position: relative;
+      }
+
+      .payment-option.selected::after {
+        content: "✓";
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: var(--primary-color);
+        color: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .payment-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .payment-option h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .payment-option p {
+        color: #6c757d;
+        margin-bottom: 1rem;
+      }
+
+      /* Formularios de Pago */
+      .payment-forms {
+        margin-top: 3rem;
+      }
+
+      .payment-form {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .payment-form.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .form-title {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark-color);
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(144, 0, 32, 0.1);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      /* Botones */
+      .btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #70001a;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary-color);
+        color: var(--accent-color);
+      }
+
+      .btn-secondary:hover {
+        background-color: #e6c300;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .payment-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 3rem 0 1rem;
+        margin-top: 3rem;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-logo {
+        height: 60px;
+        margin-bottom: 1rem;
+      }
+
+      .footer-section h4 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-section a {
+        color: #e9ecef;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: var(--secondary-color);
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        transition: background 0.3s;
+      }
+
+      .social-icons a:hover {
+        background: var(--secondary-color);
+        color: var(--accent-color);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Animaciones */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hamburger {
+          display: flex;
+        }
+
+        .nav-menu {
+          position: fixed;
+          left: -100%;
+          top: 70px;
+          flex-direction: column;
+          background-color: white;
+          width: 100%;
+          text-align: center;
+          transition: 0.3s;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+          padding: 1rem 0;
+        }
+
+        .nav-menu.active {
+          left: 0;
+        }
+
+        .nav-item {
+          margin: 1.5rem 0;
+        }
+
+        .payment-options {
+          grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .payment-actions {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .payment-actions .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header y Navegación -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-brand">
+          <div
+            class="logo"
+            style="
+              background-color: #900020;
+              color: white;
+              width: 100px;
+              height: 120px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              font-weight: bold;
+              font-size: 20px;
+            "
+          >
+            <img src="images/logo.png" height="110" />
+          </div>
+          <h1>QUITOMIL</h1>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="../pages/index.html" class="nav-link active">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a href="../pages/servicios.html" class="nav-link">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a href="../pages/requisitos.html" class="nav-link">Requisitos</a>
+          </li>
+          <li class="nav-item">
+            <a href="../pages/registro.html" class="nav-link">Registro</a>
+          </li>
+          <li class="nav-item">
+            <a href="../pages/metodos-pago.html" class="nav-link active"
+              >Pagos</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link btn-login" id="loginBtn"
+              >Iniciar Sesión</a
+            >
+          </li>
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <div class="container">
+        <h2>Métodos de Pago</h2>
+        <p>
+          Selecciona tu método de pago preferido para completar tu inscripción
+        </p>
+      </div>
+    </section>
+
+    <!-- Resumen de Compra -->
+    <section class="container">
+      <div class="purchase-summary">
+        <h2 class="summary-title">Resumen de tu Compra</h2>
+
+        <div class="summary-item">
+          <span>Servicio:</span>
+          <span id="summary-service">Preparación Física</span>
+        </div>
+
+        <div class="summary-item">
+          <span>Duración:</span>
+          <span>1 mes</span>
+        </div>
+
+        <div class="summary-item">
+          <span>Subtotal:</span>
+          <span id="summary-subtotal">$120.00</span>
+        </div>
+
+        <div class="summary-item">
+          <span>Impuestos (12%):</span>
+          <span id="summary-taxes">$14.40</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total a pagar:</span>
+          <span id="summary-total">$134.40</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Métodos de Pago -->
+    <section class="payment-methods">
+      <div class="container">
+        <h2 class="section-title">Selecciona un método de pago</h2>
+
+        <div class="payment-options">
+          <div class="payment-option" data-method="efectivo">
+            <div class="payment-icon">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <h3>Pago en Efectivo</h3>
+            <p>Realiza tu pago directamente en nuestras instalaciones</p>
+            <span class="btn btn-outline">Seleccionar</span>
+          </div>
+
+          <div class="payment-option" data-method="transferencia">
+            <div class="payment-icon">
+              <i class="fas fa-university"></i>
+            </div>
+            <h3>Transferencia Bancaria</h3>
+            <p>Transfiere desde tu banco directamente a nuestra cuenta</p>
+            <span class="btn btn-outline">Seleccionar</span>
+          </div>
+
+          <div class="payment-option" data-method="tarjeta">
+            <div class="payment-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <h3>Tarjeta de Crédito/Débito</h3>
+            <p>Paga de forma segura con tu tarjeta</p>
+            <span class="btn btn-outline">Seleccionar</span>
+          </div>
+
+          <div class="payment-option" data-method="paypal">
+            <div class="payment-icon">
+              <i class="fab fa-paypal"></i>
+            </div>
+            <h3>PayPal</h3>
+            <p>Paga a través de tu cuenta PayPal</p>
+            <span class="btn btn-outline">Seleccionar</span>
+          </div>
+        </div>
+
+        <!-- Formularios de Pago -->
+        <div class="payment-forms">
+          <!-- Formulario para Transferencia Bancaria -->
+          <div class="payment-form" id="form-transferencia">
+            <h3 class="form-title">Transferencia Bancaria</h3>
+            <p>
+              Realiza una transferencia a nuestra cuenta bancaria con los
+              siguientes datos:
+            </p>
+
+            <div class="bank-details">
+              <p><strong>Banco:</strong> Banco del Pichincha</p>
+              <p><strong>Tipo de Cuenta:</strong> Corriente</p>
+              <p><strong>Número de Cuenta:</strong> 1234567890</p>
+              <p><strong>RUC:</strong> 1234567890001</p>
+              <p><strong>Beneficiario:</strong> QUITOMIL S.A.</p>
+              <p>
+                <strong>Email para confirmación:</strong> pagos@quitomil.edu.ec
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-number">Número de Transferencia</label>
+              <input
+                type="text"
+                id="transfer-number"
+                placeholder="Ingresa el número de transferencia"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-date">Fecha de Transferencia</label>
+              <input type="date" id="transfer-date" />
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-amount">Monto Transferido</label>
+              <input
+                type="text"
+                id="transfer-amount"
+                placeholder="Ej: 134.40"
+              />
+            </div>
+
+            <div class="payment-actions">
+              <button class="btn btn-outline" id="cancel-transfer">
+                Cancelar
+              </button>
+              <button class="btn btn-primary" id="confirm-transfer">
+                Confirmar Pago
+              </button>
+            </div>
+          </div>
+
+          <!-- Formulario para Tarjeta de Crédito/Débito -->
+          <div class="payment-form" id="form-tarjeta">
+            <h3 class="form-title">Tarjeta de Crédito/Débito</h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="card-number">Número de Tarjeta</label>
+                <input
+                  type="text"
+                  id="card-number"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="card-name">Nombre en la Tarjeta</label>
+                <input type="text" id="card-name" placeholder="Juan Pérez" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="card-expiry">Fecha de Expiración</label>
+                  <input
+                    type="text"
+                    id="card-expiry"
+                    placeholder="MM/AA"
+                    maxlength="5"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="card-cvv">CVV</label>
+                  <input
+                    type="text"
+                    id="card-cvv"
+                    placeholder="123"
+                    maxlength="3"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-actions">
+              <button class="btn btn-outline" id="cancel-card">Cancelar</button>
+              <button class="btn btn-primary" id="confirm-card">
+                Pagar ahora
+              </button>
+            </div>
+          </div>
+
+          <!-- Formulario para PayPal -->
+          <div class="payment-form" id="form-paypal">
+            <h3 class="form-title">Pago con PayPal</h3>
+            <p>
+              Serás redirigido a PayPal para completar tu pago de forma segura.
+            </p>
+
+            <div style="text-align: center; margin: 2rem 0">
+              <div
+                style="
+                  background: #f8f9fa;
+                  padding: 2rem;
+                  border-radius: 10px;
+                  display: inline-block;
+                "
+              >
+                <i
+                  class="fab fa-paypal"
+                  style="font-size: 3rem; color: #003087"
+                ></i>
+                <p style="margin-top: 1rem">
+                  Haz clic en el botón para ser redirigido a PayPal
+                </p>
+              </div>
+            </div>
+
+            <div class="payment-actions">
+              <button class="btn btn-outline" id="cancel-paypal">
+                Cancelar
+              </button>
+              <button class="btn btn-primary" id="confirm-paypal">
+                Pagar con PayPal
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirmación para Pago en Efectivo -->
+          <div class="payment-form" id="form-efectivo">
+            <h3 class="form-title">Pago en Efectivo</h3>
+            <p>
+              Para completar tu registro con pago en efectivo, debes acercarte a
+              una de nuestras sedes:
+            </p>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <h4>Sede Quito</h4>
+                <p>Av. Amazonas N23-45 y Veintimilla</p>
+                <p>Lunes a Viernes: 6:00 - 21:00</p>
+                <p>Sábados: 8:00 - 14:00</p>
+              </div>
+
+              <div class="form-group">
+                <h4>Sede Saquisilí</h4>
+                <p>Calle Bolívar S/N y Cotopaxi</p>
+                <p>Lunes a Viernes: 7:00 - 20:00</p>
+                <p>Sábados: 8:00 - 13:00</p>
+              </div>
+            </div>
+
+            <p>
+              Una vez realizado el pago, tu matrícula será activada dentro de
+              las siguientes 24 horas.
+            </p>
+
+            <div class="payment-actions">
+              <button class="btn btn-outline" id="cancel-cash">Cancelar</button>
+              <button class="btn btn-primary" id="confirm-cash">
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div
+              class="footer-logo"
+              style="
+                background-color: #ffd700;
+                color: #900020;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-weight: bold;
+                font-size: 24px;
+                margin-bottom: 1rem;
+              "
+            >
+              Q
+            </div>
+            <p>
+              Preparación física y académica para las fuerzas armadas y
+              policiales del Ecuador.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Enlaces Rápidos</h4>
+            <ul>
+              <li><a href="../index.html">Inicio</a></li>
+              <li><a href="servicios.html">Servicios</a></li>
+              <li><a href="requisitos.html">Requisitos</a></li>
+              <li><a href="registro.html">Registro</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Contacto</h4>
+            <p><i class="fas fa-envelope"></i>quitomilpreparacion@gmail.com</p>
+            <p><i class="fas fa-phone"></i>+593 99 946 6574</p>
+            <p><i class="fas fa-map-marker-alt"></i> Quito y Saquisilí</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Síguenos</h4>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 QUITOMIL. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Variables globales
+      let selectedPaymentMethod = "";
+      const servicePrices = {
+        fisico: 120,
+        academico: 150,
+        combo: 220,
+      };
+
+      // Cargar datos del usuario desde sessionStorage
+      document.addEventListener("DOMContentLoaded", function () {
+        const userService = sessionStorage.getItem("user_service");
+        const userName = sessionStorage.getItem("user_name");
+
+        if (userService && servicePrices[userService]) {
+          const subtotal = servicePrices[userService];
+          const taxes = subtotal * 0.12;
+          const total = subtotal + taxes;
+
+          // Actualizar resumen
+          document.getElementById("summary-service").textContent =
+            userService === "fisico"
+              ? "Preparación Física"
+              : userService === "academico"
+              ? "Preparación Académica"
+              : "Combo Completo";
+
+          document.getElementById(
+            "summary-subtotal"
+          ).textContent = `$${subtotal.toFixed(2)}`;
+          document.getElementById(
+            "summary-taxes"
+          ).textContent = `$${taxes.toFixed(2)}`;
+          document.getElementById(
+            "summary-total"
+          ).textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Si no hay datos de usuario, redirigir al registro
+        if (!userName) {
+          alert("Por favor completa tu registro primero");
+          window.location.href = "registro.html";
+        }
+      });
+
+      // Selección de método de pago
+      document.querySelectorAll(".payment-option").forEach((option) => {
+        option.addEventListener("click", function () {
+          // Deseleccionar todos
+          document.querySelectorAll(".payment-option").forEach((opt) => {
+            opt.classList.remove("selected");
+          });
+
+          // Ocultar todos los formularios
+          document.querySelectorAll(".payment-form").forEach((form) => {
+            form.classList.remove("active");
+          });
+
+          // Seleccionar el actual
+          this.classList.add("selected");
+          selectedPaymentMethod = this.dataset.method;
+
+          // Mostrar el formulario correspondiente
+          const formId = "form-" + selectedPaymentMethod;
+          const formElement = document.getElementById(formId);
+          if (formElement) {
+            formElement.classList.add("active");
+          }
+        });
+      });
+
+      // Botones de cancelar
+      document
+        .getElementById("cancel-transfer")
+        ?.addEventListener("click", resetPaymentSelection);
+      document
+        .getElementById("cancel-card")
+        ?.addEventListener("click", resetPaymentSelection);
+      document
+        .getElementById("cancel-paypal")
+        ?.addEventListener("click", resetPaymentSelection);
+      document
+        .getElementById("cancel-cash")
+        ?.addEventListener("click", resetPaymentSelection);
+
+      function resetPaymentSelection() {
+        document.querySelectorAll(".payment-option").forEach((opt) => {
+          opt.classList.remove("selected");
+        });
+
+        document.querySelectorAll(".payment-form").forEach((form) => {
+          form.classList.remove("active");
+        });
+
+        selectedPaymentMethod = "";
+      }
+
+      // Confirmación de pagos
+      document
+        .getElementById("confirm-transfer")
+        ?.addEventListener("click", processTransferPayment);
+      document
+        .getElementById("confirm-card")
+        ?.addEventListener("click", processCardPayment);
+      document
+        .getElementById("confirm-paypal")
+        ?.addEventListener("click", processPayPalPayment);
+      document
+        .getElementById("confirm-cash")
+        ?.addEventListener("click", processCashPayment);
+
+      function processTransferPayment() {
+        const transferNumber = document.getElementById("transfer-number").value;
+        const transferDate = document.getElementById("transfer-date").value;
+        const transferAmount = document.getElementById("transfer-amount").value;
+
+        if (!transferNumber || !transferDate || !transferAmount) {
+          alert("Por favor completa todos los campos");
+          return;
+        }
+
+        processPayment("transferencia");
+      }
+
+      function processCardPayment() {
+        const cardNumber = document.getElementById("card-number").value;
+        const cardName = document.getElementById("card-name").value;
+        const cardExpiry = document.getElementById("card-expiry").value;
+        const cardCvv = document.getElementById("card-cvv").value;
+
+        if (!cardNumber || !cardName || !cardExpiry || !cardCvv) {
+          alert("Por favor completa todos los campos");
+          return;
+        }
+
+        // Validación básica de tarjeta
+        if (cardNumber.replace(/\s/g, "").length !== 16) {
+          alert("Por favor ingresa un número de tarjeta válido");
+          return;
+        }
+
+        processPayment("tarjeta");
+      }
+
+      function processPayPalPayment() {
+        // Simulación de redirección a PayPal
+        alert(
+          "Serás redirigido a PayPal para completar tu pago. En una implementación real, esto conectaría con la API de PayPal."
+        );
+
+        // Simular procesamiento
+        setTimeout(() => {
+          processPayment("paypal");
+        }, 2000);
+      }
+
+      function processCashPayment() {
+        processPayment("efectivo");
+      }
+
+      function processPayment(method) {
+        // Mostrar indicador de carga
+        const buttons = document.querySelectorAll(
+          `#confirm-${method}, #confirm-transfer, #confirm-card, #confirm-paypal, #confirm-cash`
+        );
+        buttons.forEach((btn) => {
+          if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML =
+              'Procesando... <i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            // Simular procesamiento de pago
+            setTimeout(() => {
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+
+              // Simular pago exitoso
+              alert(
+                "¡Pago procesado con éxito! Tu matrícula ha sido activada."
+              );
+
+              // Redirigir al dashboard del usuario
+              window.location.href = "../panel-usuario.html";
+            }, 2000);
+          }
+        });
+      }
+
+      // Toggle del menú hamburguesa
+      const hamburger = document.querySelector(".hamburger");
+      const navMenu = document.querySelector(".nav-menu");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+
+      // Cerrar menú al hacer clic en un enlace
+      document.querySelectorAll(".nav-link").forEach((n) =>
+        n.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        })
+      );
+    </script>
+  </body>
+</html>

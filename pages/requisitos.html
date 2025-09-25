@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Requisitos - QUITOMIL</title>
+    <style>
+        :root {
+            --primary-color: #900020;
+            /* Vino */
+            --secondary-color: #ffd700;
+            /* Amarillo */
+            --accent-color: #212529;
+            /* Negro */
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            overflow-x: hidden;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header y Navegación */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .nav-brand h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 1.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        .btn-login {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #70001a;
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 60vh;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg,
+                    var(--primary-color) 0%,
+                    #70001a 100%);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%, 25% 0);
+            z-index: 0;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #495057;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #70001a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6c300;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Secciones */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+
+        /* Requisitos Section */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .requirement-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .requirement-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary-color);
+        }
+
+        .requirement-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .requirement-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .requirement-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Instituciones Requisitos */
+        .institution-requirements {
+            background-color: var(--light-color);
+        }
+
+        .institution-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .institution-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .requirements-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .requirement-category h4 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .requirement-category ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .requirement-category li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .requirement-category li:before {
+            content: "✓";
+            color: var(--success-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Proceso de Selección */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            line-height: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Enlaces Oficiales */
+        .official-links {
+            background-color: var(--light-color);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .official-link {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--dark-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .official-link:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            color: var(--primary-color);
+        }
+
+        .official-link h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #e9ecef;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary-color);
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(144, 0, 32, 0.1);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 7rem 1rem 3rem;
+            }
+
+            .hero::before {
+                width: 100%;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 0.1;
+            }
+
+            .hero-content {
+                margin-bottom: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                padding: 1rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 1.5rem 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .requirements-grid,
+            .process-steps,
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .requirements-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header y Navegación -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo" style="
+              background-color: #900020;
+              color: white;
+              width: 100px;
+              height: 120px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              font-weight: bold;
+              font-size: 20px;
+            ">
+                    <img src="../images/logo.png" height="110" />
+                </div>
+                <h1>QUITOMIL</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../pages/index.html" class="nav-link ">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../pages/servicios.html" class="nav-link ">Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../requisitos.html" class="nav-link active">Requisitos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../pages/registro.html" class="nav-link ">Registro</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../pages/metodos-pago.html" class="nav-link ">Pagos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link btn-login" id="loginBtn">Iniciar Sesión</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2 class="hero-title animate-text">
+                Requisitos para Ingresar a las Fuerzas Armadas del Ecuador
+            </h2>
+            <p class="hero-description">
+                Información oficial y actualizada sobre los requisitos necesarios para ingresar 
+                a las diferentes instituciones militares y policiales del Ecuador.
+            </p>
+            <div class="hero-buttons">
+                <a href="registro.html" class="btn btn-primary">Inscribirse Ahora</a>
+                <a href="servicios.html" class="btn btn-secondary">Ver Servicios</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requisitos Generales -->
+    <section class="requirements">
+        <div class="container">
+            <h2 class="section-title">Requisitos Generales</h2>
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <div class="requirement-icon">🇪🇨</div>
+                    <h3>Nacionalidad</h3>
+                    <p>Ser ecuatoriano por nacimiento o naturalización</p>
+                </div>
+                <div class="requirement-card">
+                    <div class="requirement-icon">🎓</div>
+                    <h3>Educación</h3>
+                    <p>Bachillerato completo o equivalente</p>
+                </div>
+                <div class="requirement-card">
+                    <div class="requirement-icon">📅</div>
+                    <h3>Edad</h3>
+                    <p>Entre 18 y 25 años (varía por institución)</p>
+                </div>
+                <div class="requirement-card">
+                    <div class="requirement-icon">🏋️</div>
+                    <h3>Estado Físico</h3>
+                    <p>Buen estado de salud y condición física óptima</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requisitos por Institución -->
+    <section class="institution-requirements">
+        <div class="container">
+            <h2 class="section-title">Requisitos Específicos por Institución</h2>
+
+            <!-- Ejército Ecuatoriano -->
+            <div class="institution-card">
+                <h3>🇪🇨 Ejército Ecuatoriano</h3>
+                <div class="requirements-list">
+                    <div class="requirement-category">
+                        <h4>Requisitos Básicos</h4>
+                        <ul>
+                            <li>Edad: 18 a 22 años</li>
+                            <li>Estatura mínima: 1.65m (hombres), 1.60m (mujeres)</li>
+                            <li>Soltero y sin hijos</li>
+                            <li>Bachillerato completo</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-category">
+                        <h4>Documentación Requerida</h4>
+                        <ul>
+                            <li>Cédula de identidad original y copia</li>
+                            <li>Título de bachiller notariado</li>
+                            <li>Certificado de votación</li>
+                            <li>4 fotografías tamaño carnet</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-category">
+                        <h4>Proceso de Selección</h4>
+                        <ul>
+                            <li>Examen de conocimientos generales</li>
+                            <li>Pruebas físicas y psicológicas</li>
+                            <li>Entrevista personal</li>
+                            <li>Examen médico completo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Armada del Ecuador -->
+            <div class="institution-card">
+                <h3>⚓ Armada del Ecuador</h3>
+                <div class="requirements-list">
+                    <div class="requirement-category">
+                        <h4>Requisitos Básicos</h4>
+                        <ul>
+                            <li>Edad: 17 a 22 años</li>
+                            <li>Estatura mínima: 1.65m (hombres), 1.60m (mujeres)</li>
+                            <li>Excelente condición física acuática</li>
+                            <li>Conocimientos básicos de natación</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-category">
+                        <h4>Proceso de Selección</h4>
+                        <ul>
+                            <li>Examen médico especializado</li>
+                            <li>Pruebas de natación y resistencia acuática</li>
+                            <li>Evaluación psicológica marina</li>
+                            <li>Examen de inglés básico</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fuerza Aérea Ecuatoriana -->
+            <div class="institution-card">
+                <h3>✈️ Fuerza Aérea Ecuatoriana</h3>
+                <div class="requirements-list">
+                    <div class="requirement-category">
+                        <h4>Requisitos Básicos</h4>
+                        <ul>
+                            <li>Edad: 17 a 23 años</li>
+                            <li>Agudeza visual 20/20 sin corrección</li>
+                            <li>Estatura entre 1.65m y 1.90m</li>
+                            <li>Excelente condición cardiovascular</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-category">
+                        <h4>Proceso de Selección</h4>
+                        <ul>
+                            <li>Examen de inglés básico</li>
+                            <li>Pruebas de coordinación motriz</li>
+                            <li>Evaluación de orientación espacial</li>
+                            <li>Examen médico aeroespacial</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policía Nacional -->
+            <div class="institution-card">
+                <h3>👮 Policía Nacional del Ecuador</h3>
+                <div class="requirements-list">
+                    <div class="requirement-category">
+                        <h4>Requisitos Básicos</h4>
+                        <ul>
+                            <li>Edad: 18 a 25 años</li>
+                            <li>Estatura mínima: 1.70m (hombres), 1.65m (mujeres)</li>
+                            <li>Antecedentes penales limpios</li>
+                            <li>Récord policial favorable</li>
+                        </ul>
+                    </div>
+                    <div class="requirement-category">
+                        <h4>Proceso de Selección</h4>
+                        <ul>
+                            <li>Examen de conocimientos generales</li>
+                            <li>Entrevista psicológica profunda</li>
+                            <li>Pruebas de integridad y valores</li>
+                            <li>Evaluación de aptitud policial</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proceso de Selección -->
+    <section class="selection-process">
+        <div class="container">
+            <h2 class="section-title">Proceso de Selección General</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Inscripción</h4>
+                    <p>Registro en línea o presencial con documentación completa</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Exámenes</h4>
+                    <p>Conocimientos, psicológicos y médicos especializados</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Pruebas Físicas</h4>
+                    <p>Evaluación de condición física específica por institución</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Entrevista</h4>
+                    <p>Evaluación personal, motivacional y de aptitudes</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h4>Admisión</h4>
+                    <p>Publicación de resultados y proceso de matrícula</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enlaces Oficiales -->
+    <section class="official-links">
+        <div class="container">
+            <h2 class="section-title">Enlaces Oficiales</h2>
+            <div class="links-grid">
+                <a href="https://www.defensa.gob.ec" target="_blank" class="official-link">
+                    <h4>Ministerio de Defensa</h4>
+                    <p>www.defensa.gob.ec</p>
+                </a>
+                <a href="https://www.ejercito.mil.ec" target="_blank" class="official-link">
+                    <h4>Ejército Ecuatoriano</h4>
+                    <p>www.ejercito.mil.ec</p>
+                </a>
+                <a href="https://www.armada.mil.ec" target="_blank" class="official-link">
+                    <h4>Armada del Ecuador</h4>
+                    <p>www.armada.mil.ec</p>
+                </a>
+                <a href="https://www.fuerzaaereaecuatoriana.mil.ec" target="_blank" class="official-link">
+                    <h4>Fuerza Aérea</h4>
+                    <p>www.fuerzaaereaecuatoriana.mil.ec</p>
+                </a>
+                <a href="https://www.policia.gob.ec" target="_blank" class="official-link">
+                    <h4>Policía Nacional</h4>
+                    <p>www.policia.gob.ec</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo" style="
+                background-color: #ffd700;
+                color: #900020;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-weight: bold;
+                font-size: 24px;
+                margin-bottom: 1rem;
+              ">
+                        Q
+                    </div>
+                    <p>
+                        Preparación física y académica para las fuerzas armadas y
+                        policiales del Ecuador.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="requisitos.html">Requisitos</a></li>
+                        <li><a href="registro.html">Registro</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+            <p><i class="fas fa-envelope"></i>quitomilpreparacion@gmail.com</p>
+            <p><i class="fas fa-phone"></i>+593 99 946 6574</p>
+            <p><i class="fas fa-map-marker-alt"></i> Quito y Saquisilí</p>
+          </div>
+
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#">📘</a>
+                        <a href="#">📷</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📺</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 QUITOMIL. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </form>
+            <p>
+                ¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+
+        document.querySelectorAll(".nav-link").forEach((n) =>
+            n.addEventListener("click", () => {
+                hamburger.classList.remove("active");
+                navMenu.classList.remove("active");
+            })
+        );
+
+        const loginBtn = document.getElementById("loginBtn");
+        const loginModal = document.getElementById("loginModal");
+        const closeModal = document.querySelector(".close");
+
+        loginBtn.addEventListener("click", () => {
+            loginModal.style.display = "flex";
+        });
+
+        closeModal.addEventListener("click", () => {
+            loginModal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = "none";
+            }
+        });
+
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", function (e) {
+                e.preventDefault();
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                console.log("Email:", email, "Password:", password);
+
+                alert(
+                    "Login simulado exitoso. En una implementación real, esto conectaría con el backend."
+                );
+                loginModal.style.display = "none";
+            });
+
+        function animateOnScroll() {
+            const elements = document.querySelectorAll(
+                ".requirement-card, .institution-card, .step"
+            );
+
+            elements.forEach((element) => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = 1;
+                    element.style.transform = "translateY(0)";
+                }
+            });
+        }
+
+        document
+            .querySelectorAll(".requirement-card, .institution-card, .step")
+            .forEach((element) => {
+                element.style.opacity = 0;
+                element.style.transform = "translateY(20px)";
+                element.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            });
+
+        window.addEventListener("scroll", animateOnScroll);
+        window.addEventListener("load", animateOnScroll);
+    </script>
+</body>
+
+</html>
